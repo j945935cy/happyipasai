@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="快樂學習 iPAS 一次就過！提供 iPAS AI 應用規劃師初級、中級備考講義、考古題解析、模擬測驗與考試攻略。" />
+  <meta name="keywords" content="iPAS, AI應用規劃師, 人工智慧, 考試攻略, 備考, 模擬測驗, RAG, 機器學習" />
+  <title>快樂學習 iPAS 一次就過！</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header id="site-header">
+  <div class="header-inner">
+    <span class="site-title">快樂學習 iPAS 一次就過！</span>
+    <div class="header-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="搜尋講義..." aria-label="搜尋講義" />
+    </div>
+  </div>
+</header>
+
+<!-- ===== Navigation ===== -->
+<nav id="site-nav" aria-label="分類導覽">
+  <div class="nav-inner">
+    <span class="nav-link active" data-filter="all">全部文章</span>
+    <span class="nav-link" data-filter="講義整理">講義整理</span>
+    <span class="nav-link" data-filter="考古題解析">考古題解析</span>
+    <span class="nav-link" data-filter="考前快速回顧">考前快速回顧</span>
+    <span class="nav-link" data-filter="考試攻略">考試攻略</span>
+    <span class="nav-link" data-filter="模擬測驗">模擬測驗</span>
+    <span class="nav-link" data-filter="AI知識圖解">AI 知識圖解</span>
+    <span class="nav-link" data-filter="AI 核心定義與治理框架">AI 治理框架</span>
+    <span class="nav-link" data-filter="數據基本功與資料工程">數據基本功</span>
+    <span class="nav-link" data-filter="iPAS AI 中級">iPAS 中級</span>
+    <span class="nav-link" data-filter="備考用書">備考用書</span>
+  </div>
+</nav>
+
+<!-- ===== Main App ===== -->
+<main id="app">
+
+  <!-- ===== Post List View ===== -->
+  <div id="post-list-view">
+
+    <!-- Hero -->
+    <section id="hero-section">
+      <div class="hero-inner">
+        <p class="hero-eyebrow">全台最受歡迎的 iPAS AI 備考資源</p>
+        <h1 class="hero-title">快樂學習 iPAS，一次就過！</h1>
+        <p class="hero-subtitle">初級・中級 AI 應用規劃師｜講義整理・考古題解析・線上模擬測驗</p>
+        <div class="hero-cards">
+          <div class="hero-card" data-filter="講義整理">
+            <div class="hc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            <div class="hc-label">初級備考</div>
+            <div class="hc-desc">核心講義・考試攻略</div>
+          </div>
+          <div class="hero-card" data-filter="iPAS AI 中級">
+            <div class="hc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+            <div class="hc-label">中級備考</div>
+            <div class="hc-desc">應用規劃・大數據・機器學習</div>
+          </div>
+          <div class="hero-card" data-filter="模擬測驗">
+            <div class="hc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="hc-label">線上模擬測驗</div>
+            <div class="hc-desc">初級・中級 Google Forms</div>
+          </div>
+          <div class="hero-card" data-filter="考古題解析">
+            <div class="hc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+            <div class="hc-label">考古題解析</div>
+            <div class="hc-desc">114 年真題逐題詳解</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="posts-grid" class="posts-grid" role="feed" aria-label="文章列表">
+      <!-- Injected by JS -->
+    </div>
+    <div id="pagination" class="pagination" role="navigation" aria-label="分頁">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- ===== Post Detail View ===== -->
+  <section id="post-detail" aria-labelledby="post-detail-title">
+    <div class="post-detail-header">
+      <button class="back-btn" id="back-btn" aria-label="返回文章列表">
+        &#8592; 返回列表
+      </button>
+      <h1 class="post-detail-title" id="post-detail-title"></h1>
+      <div class="post-detail-meta">
+        <span id="post-detail-date"></span>
+        <span id="post-detail-labels"></span>
+      </div>
+    </div>
+    <div class="post-detail-body" id="post-detail-body">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- ===== Sidebar ===== -->
+  <aside id="sidebar" aria-label="側邊欄">
+
+    <!-- Search -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">搜尋講義</p>
+      <div class="sidebar-search">
+        <input type="search" id="sidebar-search-input" placeholder="輸入關鍵字..." aria-label="側邊欄搜尋" />
+        <button id="sidebar-search-btn" aria-label="搜尋">搜</button>
+      </div>
+    </div>
+
+    <!-- Category Labels -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">資源分類</p>
+      <div id="label-list" class="label-list">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Archive -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">貼文記錄</p>
+      <ul id="archive-list" class="archive-list" aria-label="文章存檔">
+        <!-- Injected by JS -->
+      </ul>
+    </div>
+
+    <!-- Books -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">備考用書</p>
+      <div class="book-card">
+        <p class="book-title">iPAS AI 規劃師一次考過（初級）</p>
+        <a href="https://play.google.com/store/books/details/%E8%AD%89%E7%85%A7%E9%81%94%E4%BA%BA%E7%A0%94%E7%A9%B6%E5%AE%A4%E8%AD%89%E7%85%A7%E7%B5%84_iPAS_AI_%E8%A6%8F%E5%8A%83%E5%B8%AB%E4%B8%80%E6%AC%A1%E8%80%83%E9%81%8E?id=Q3itEQAAQBAJ&hl=zh_TW" target="_blank" rel="noopener noreferrer">Google Play 連結</a>
+      </div>
+      <div class="book-card">
+        <p class="book-title">不死背也能高分的 iPAS AI（初級）</p>
+        <a href="https://play.google.com/store/books/details/%E8%AD%89%E7%85%A7%E9%81%94%E4%BA%BA%E7%A0%94%E7%A9%B6%E5%AE%A4AI_%E7%B5%84_%E4%B8%8D%E6%AD%BB%E8%83%8C_%E4%B9%9F%E8%83%BD%E9%AB%98%E5%88%86%E7%9A%84_iPAS_AI?id=gB2zEQAAQBAJ&hl=zh_TW" target="_blank" rel="noopener noreferrer">Google Play 連結</a>
+      </div>
+      <div class="book-card">
+        <p class="book-title">iPAS 中級 AI 應用規劃師高分過關指南（中級）</p>
+        <a href="https://books.google.com.tw/books/about?id=5ki3EQAAQBAJ&redir_esc=y" target="_blank" rel="noopener noreferrer">Google Books 連結</a>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="sidebar-card">
+      <p class="sidebar-title">連絡版主</p>
+      <p class="contact-info"><a href="mailto:t945935@gmail.com">t945935@gmail.com</a></p>
+    </div>
+
+  </aside>
+</main>
+
+<!-- ===== Footer ===== -->
+<footer id="site-footer">
+  <p>Copyright &copy; 快樂學習 iPAS 一次就過！ &nbsp;|&nbsp; 本站以 HTML / CSS / JavaScript 靜態方式重建，原始內容來自 <a href="https://happyipasai.blogspot.com" target="_blank" rel="noopener noreferrer">happyipasai.blogspot.com</a></p>
+</footer>
+
+<!-- ===== Scroll to Top ===== -->
+<button id="scroll-top" aria-label="回到頂部">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<!-- ===== Scripts ===== -->
+<script src="js/posts.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

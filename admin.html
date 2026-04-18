@@ -1,0 +1,490 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文章管理 — iPAS Blog Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary: #0071e3;
+  --primary-dark: #0077ed;
+  --danger: #dc2626;
+  --danger-dark: #b91c1c;
+  --success: #16a34a;
+  --success-dark: #15803d;
+  --bg: #fbfbfd;
+  --surface: #ffffff;
+  --border: #d2d2d7;
+  --text: #1d1d1f;
+  --text-muted: #6e6e73;
+  --tag-bg: #f5f5f7;
+  --tag-color: #1d1d1f;
+  --radius: 12px;
+  --shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+body {
+  font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+}
+/* ── Header ── */
+#site-header {
+  background: rgba(255,255,255,.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  color: var(--text);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 16px;
+}
+.site-title { font-size: 1rem; font-weight: 600; white-space: nowrap; color: var(--text); letter-spacing: -.01em; }
+.header-badge {
+  background: #f5f5f7;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.header-link { color: var(--primary); font-size: 13px; text-decoration: none; }
+.header-link:hover { text-decoration: underline; }
+/* ── Layout ── */
+#layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 32px auto;
+  gap: 24px;
+  padding: 0 24px;
+  align-items: flex-start;
+}
+/* ── Sidebar ── */
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 88px;
+}
+.sidebar-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.sidebar-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 12px;
+}
+#search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg);
+  margin-bottom: 12px;
+}
+#search-input:focus { outline: none; border-color: var(--primary); }
+#post-list { display: flex; flex-direction: column; gap: 4px; max-height: 420px; overflow-y: auto; }
+.post-item {
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.4;
+  border-left: 3px solid transparent;
+  transition: background .15s;
+}
+.post-item:hover { background: var(--bg); }
+.post-item.active { background: var(--tag-bg); border-left-color: var(--primary); }
+.post-item .pi-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.btn-new {
+  display: block; width: 100%; padding: 10px;
+  background: var(--primary); color: #fff;
+  border: none; border-radius: 8px;
+  cursor: pointer; font-size: 14px; font-weight: 700;
+  font-family: inherit; text-align: center;
+  transition: background .15s;
+}
+.btn-new:hover { background: var(--primary-dark); }
+/* ── Main ── */
+#main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+/* ── Panel ── */
+.panel {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+.panel-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px; flex-wrap: wrap;
+}
+.panel-header h2 { font-size: 18px; color: var(--text); flex: 1; }
+/* ── Buttons ── */
+.btn {
+  padding: 8px 18px; border: none; border-radius: 8px;
+  cursor: pointer; font-size: 13px; font-weight: 700;
+  font-family: inherit; transition: background .15s; white-space: nowrap;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: var(--danger-dark); }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { background: var(--success-dark); }
+.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--bg); color: var(--text); }
+/* ── Table ── */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  text-align: left; padding: 10px 14px;
+  border-bottom: 2px solid var(--border);
+  color: var(--text-muted); font-size: 12px;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg); }
+.tag { display: inline-block; background: var(--tag-bg); color: var(--tag-color); border-radius: 4px; padding: 1px 7px; font-size: 11px; font-weight: 500; margin: 1px; }
+.post-id { color: var(--text-muted); font-size: 11px; }
+.action-btns { display: flex; gap: 6px; }
+.btn-sm { padding: 4px 10px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: 700; font-family: inherit; }
+.btn-sm-edit { background: var(--tag-bg); color: var(--primary); }
+.btn-sm-edit:hover { background: #dbeafe; }
+.btn-sm-del { background: #fee2e2; color: var(--danger); }
+.btn-sm-del:hover { background: #fecaca; }
+/* ── Form ── */
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+.form-group input, .form-group textarea {
+  width: 100%; padding: 9px 13px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; font-family: inherit; color: var(--text);
+  background: var(--surface); transition: border-color .2s;
+}
+.form-group input:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+.form-row { display: flex; gap: 16px; }
+.form-row .form-group { flex: 1; }
+#f-content { min-height: 340px; font-family: Consolas, 'Courier New', monospace; font-size: 13px; line-height: 1.6; resize: vertical; background: #f8fafc; }
+#f-excerpt { min-height: 80px; resize: vertical; }
+.form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+/* ── Stats ── */
+.stats-bar { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-card { background: var(--bg); border-radius: 8px; padding: 12px 20px; flex: 1; min-width: 120px; text-align: center; }
+.stat-card .num { font-size: 24px; font-weight: 700; color: var(--primary); }
+.stat-card .lbl { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+/* ── Export ── */
+.note { background: #fefce8; border: 1px solid #fde047; border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #713f12; margin-bottom: 16px; }
+#export-output { width: 100%; min-height: 320px; font-family: Consolas, monospace; font-size: 12px; line-height: 1.5; border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--bg); color: var(--text); resize: vertical; }
+.export-actions { display: flex; gap: 10px; margin-top: 12px; }
+/* ── Welcome ── */
+#welcome { text-align: center; padding: 64px 20px; color: var(--text-muted); }
+#welcome .big { font-size: 52px; margin-bottom: 16px; }
+#welcome h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+#welcome p { font-size: 14px; }
+#welcome code { background: var(--tag-bg); color: var(--primary); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+/* ── Toast ── */
+#toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+#toast.show { opacity: 1; }
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  #layout { flex-direction: column; padding: 0 16px; margin: 16px auto; }
+  #sidebar { width: 100%; position: static; }
+  .form-row { flex-direction: column; gap: 0; }
+}
+</style>
+</head>
+<body>
+<header id="site-header">
+  <div class="header-inner">
+    <div class="site-title">📝 快樂學習 iPAS — 文章管理</div>
+    <span class="header-badge">Admin</span>
+    <a href="index.html" class="header-link">← 返回網站</a>
+  </div>
+</header>
+<div id="layout">
+  <aside id="sidebar">
+    <div class="sidebar-card">
+      <h3>文章列表</h3>
+      <input type="text" id="search-input" placeholder="🔍 搜尋標題…">
+      <div id="post-list"></div>
+    </div>
+    <button class="btn-new" onclick="newPost()">＋ 新增文章</button>
+    <div class="sidebar-card" style="text-align:center">
+      <button class="btn btn-success" style="width:100%" onclick="showList()">📋 文章總覽</button>
+      <div style="margin-top:8px">
+        <button class="btn btn-ghost" style="width:100%;font-size:12px" onclick="showExport()">⬇ 匯出 posts.js</button>
+      </div>
+    </div>
+  </aside>
+  <main id="main">
+    <div id="welcome" class="panel">
+      <div class="big">📚</div>
+      <h3>選取文章開始編輯</h3>
+      <p>從左側列表點選文章，或點「＋ 新增文章」</p>
+      <p style="margin-top:8px">修改完畢後，請<strong>匯出 posts.js</strong> 以覆蓋原始檔案</p>
+      <p style="margin-top:8px; font-size:13px">目前網站：<code>http://localhost:8080</code></p>
+    </div>
+    <div id="list-panel" style="display:none" class="panel">
+      <div class="panel-header">
+        <h2>所有文章</h2>
+        <button class="btn btn-success" onclick="showExport()">⬇ 匯出 posts.js</button>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-card"><div class="num" id="stat-total">0</div><div class="lbl">文章總數</div></div>
+        <div class="stat-card"><div class="num" id="stat-labels">0</div><div class="lbl">標籤種類</div></div>
+        <div class="stat-card"><div class="num" id="stat-latest">—</div><div class="lbl">最新日期</div></div>
+      </div>
+      <table>
+        <thead><tr><th>#</th><th>標題 / ID</th><th>日期</th><th>標籤</th><th>操作</th></tr></thead>
+        <tbody id="list-body"></tbody>
+      </table>
+    </div>
+    <div id="editor-panel" style="display:none" class="panel">
+      <div class="panel-header">
+        <h2 id="editor-title">新增文章</h2>
+        <button class="btn btn-ghost" onclick="showList()">← 返回列表</button>
+        <button class="btn btn-success" onclick="savePost()">💾 儲存</button>
+        <button class="btn btn-danger" id="btn-delete" onclick="deletePost()" style="display:none">🗑 刪除</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:2">
+          <label>標題 *</label>
+          <input type="text" id="f-title" placeholder="文章標題">
+        </div>
+        <div class="form-group" style="flex:1">
+          <label>ID *</label>
+          <input type="text" id="f-id" placeholder="unique-post-id">
+          <div class="form-hint">英文、數字、連字號，不可重複</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>日期</label>
+          <input type="text" id="f-date" placeholder="2026-04">
+          <div class="form-hint">格式：YYYY-MM 或 YYYY-MM-DD</div>
+        </div>
+        <div class="form-group" style="flex:2">
+          <label>標籤（逗號分隔）</label>
+          <input type="text" id="f-labels" placeholder="講義整理, 考試攻略">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>摘要（excerpt）</label>
+        <textarea id="f-excerpt" placeholder="一段描述文章主旨的摘要文字…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>內容（HTML）</label>
+        <textarea id="f-content" spellcheck="false" placeholder="<h2>段落標題</h2>&#10;<p>內容文字…</p>"></textarea>
+        <div class="form-hint">支援 &lt;h2&gt;、&lt;p&gt;、&lt;ul&gt;、&lt;ol&gt;、&lt;strong&gt; 等 HTML 標籤</div>
+      </div>
+    </div>
+    <div id="export-panel" style="display:none" class="panel">
+      <div class="panel-header">
+        <h2>匯出 posts.js</h2>
+        <button class="btn btn-ghost" onclick="showList()">← 返回列表</button>
+      </div>
+      <div class="note">⚠️ 請將下方內容<strong>全部複製</strong>，覆蓋 <code>js/posts.js</code> 後存檔，再重新整理瀏覽器即可看到更新。</div>
+      <textarea id="export-output" readonly></textarea>
+      <div class="export-actions">
+        <button class="btn btn-primary" onclick="copyExport()">📋 複製全部</button>
+        <button class="btn btn-success" onclick="downloadExport()">⬇ 下載 posts.js</button>
+      </div>
+    </div>
+  </main>
+</div>
+<div id="toast"></div>
+<script src="js/posts.js"></script>
+<script>
+let posts = JSON.parse(JSON.stringify(POSTS));
+let editingIndex = -1;
+
+renderSidebar();
+showWelcome();
+document.getElementById('search-input').addEventListener('input', renderSidebar);
+
+function showWelcome() { setActive('welcome'); }
+function showList()    { setActive('list-panel'); renderList(); renderSidebar(); }
+function showExport()  { setActive('export-panel'); document.getElementById('export-output').value = buildPostsJS(); }
+
+function setActive(id) {
+  ['welcome','list-panel','editor-panel','export-panel'].forEach(p => {
+    document.getElementById(p).style.display = p === id ? '' : 'none';
+  });
+  if (id !== 'editor-panel') editingIndex = -1;
+}
+
+function renderSidebar() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  const list = document.getElementById('post-list');
+  list.innerHTML = '';
+  posts.forEach((p, i) => {
+    if (q && !p.title.toLowerCase().includes(q)) return;
+    const div = document.createElement('div');
+    div.className = 'post-item' + (editingIndex === i ? ' active' : '');
+    div.innerHTML = '<div>' + p.title + '</div><div class="pi-date">' + p.date + '</div>';
+    div.onclick = () => editPost(i);
+    list.appendChild(div);
+  });
+}
+
+function renderList() {
+  const labels = new Set(posts.flatMap(p => p.labels || []));
+  const latest = posts.map(p => p.date).sort().reverse()[0] || '—';
+  document.getElementById('stat-total').textContent = posts.length;
+  document.getElementById('stat-labels').textContent = labels.size;
+  document.getElementById('stat-latest').textContent = latest;
+  const tbody = document.getElementById('list-body');
+  tbody.innerHTML = '';
+  posts.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    const tags = (p.labels || []).map(l => '<span class="tag">' + l + '</span>').join('');
+    tr.innerHTML = '<td>' + (i+1) + '</td><td><strong>' + p.title + '</strong><br><span class="post-id">' + p.id + '</span></td><td>' + p.date + '</td><td>' + tags + '</td><td><div class="action-btns"><button class="btn-sm btn-sm-edit" onclick="editPost(' + i + ')">✏️ 編輯</button><button class="btn-sm btn-sm-del" onclick="confirmDelete(' + i + ')">🗑 刪除</button></div></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function newPost() {
+  editingIndex = -1;
+  document.getElementById('editor-title').textContent = '新增文章';
+  document.getElementById('btn-delete').style.display = 'none';
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-date').value = new Date().toISOString().slice(0, 7);
+  document.getElementById('f-labels').value = '';
+  document.getElementById('f-excerpt').value = '';
+  document.getElementById('f-content').value = '';
+  setActive('editor-panel');
+  renderSidebar();
+}
+
+function editPost(i) {
+  editingIndex = i;
+  const p = posts[i];
+  document.getElementById('editor-title').textContent = '編輯文章';
+  document.getElementById('btn-delete').style.display = '';
+  document.getElementById('f-id').value = p.id;
+  document.getElementById('f-title').value = p.title;
+  document.getElementById('f-date').value = p.date;
+  document.getElementById('f-labels').value = (p.labels || []).join(', ');
+  document.getElementById('f-excerpt').value = p.excerpt || '';
+  document.getElementById('f-content').value = (p.content || '').trim();
+  setActive('editor-panel');
+  renderSidebar();
+}
+
+function savePost() {
+  const id    = document.getElementById('f-id').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  if (!id || !title) { toast('⚠️ ID 與標題為必填'); return; }
+  const dupIdx = posts.findIndex(p => p.id === id);
+  if (dupIdx !== -1 && dupIdx !== editingIndex) { toast('⚠️ ID 已存在，請更換'); return; }
+  const post = {
+    id, title,
+    date:    document.getElementById('f-date').value.trim(),
+    labels:  document.getElementById('f-labels').value.split(',').map(s => s.trim()).filter(Boolean),
+    excerpt: document.getElementById('f-excerpt').value.trim(),
+    content: '\n      ' + document.getElementById('f-content').value.trim() + '\n    '
+  };
+  if (editingIndex === -1) { posts.unshift(post); toast('✅ 文章已新增'); }
+  else { posts[editingIndex] = post; toast('✅ 已儲存'); }
+  showList();
+}
+
+function confirmDelete(i) {
+  if (!confirm('確定刪除「' + posts[i].title + '」？')) return;
+  posts.splice(i, 1);
+  toast('🗑 已刪除');
+  renderList();
+  renderSidebar();
+}
+
+function deletePost() {
+  if (editingIndex === -1) return;
+  if (!confirm('確定刪除「' + posts[editingIndex].title + '」？')) return;
+  posts.splice(editingIndex, 1);
+  toast('🗑 已刪除');
+  showList();
+}
+
+function buildPostsJS() {
+  const lines = ['// posts.js — All blog post data for 快樂學習 iPAS 一次就過！', 'const POSTS = ['];
+  posts.forEach((p, i) => {
+    lines.push('  {');
+    lines.push('    id: ' + JSON.stringify(p.id) + ',');
+    lines.push('    title: ' + JSON.stringify(p.title) + ',');
+    lines.push('    date: ' + JSON.stringify(p.date) + ',');
+    lines.push('    labels: ' + JSON.stringify(p.labels || []) + ',');
+    if (p.excerpt) lines.push('    excerpt: ' + JSON.stringify(p.excerpt) + ',');
+    const cv = (p.content || '').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+    lines.push('    content: `' + cv + '`');
+    lines.push('  }' + (i < posts.length - 1 ? ',' : ''));
+  });
+  lines.push('];', '');
+  lines.push('const ALL_LABELS = [...new Set(POSTS.flatMap(p => p.labels))].sort();');
+  lines.push('');
+  lines.push('const ARCHIVE = POSTS.reduce((acc, p) => {');
+  lines.push('  const key = p.date.slice(0, 7);');
+  lines.push('  acc[key] = (acc[key] || 0) + 1;');
+  lines.push('  return acc;');
+  lines.push('}, {});');
+  return lines.join('\n');
+}
+
+function copyExport() {
+  const ta = document.getElementById('export-output');
+  ta.select();
+  document.execCommand('copy');
+  toast('📋 已複製到剪貼簿');
+}
+
+function downloadExport() {
+  const blob = new Blob([buildPostsJS()], { type: 'text/javascript' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'posts.js';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast('⬇ 下載中…');
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
