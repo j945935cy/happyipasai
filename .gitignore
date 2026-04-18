@@ -1,0 +1,10 @@
+# 管理工具（僅限本機使用，不上傳 GitHub）
+admin.html
+
+# 系統檔案
+.DS_Store
+Thumbs.db
+
+# 編輯器
+.vscode/
+*.swp
